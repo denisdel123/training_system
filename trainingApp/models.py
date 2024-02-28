@@ -30,10 +30,10 @@ class Student(models.Model):
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Наименование курса')
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name='Автор курса')
-    start_products = models.DateTimeField(**NULLABLE, verbose_name='Начало курса')
-    cost = models.CharField(**NULLABLE, verbose_name='Стоимость курса')
+    name = models.CharField(max_length=50, verbose_name='Название')
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name='Автор')
+    start_products = models.DateTimeField(**NULLABLE, verbose_name='Начало')
+    cost = models.CharField(max_length=50 ,**NULLABLE, verbose_name='Стоимость')
 
     def __str__(self):
         return f'{self.name}'
@@ -41,3 +41,18 @@ class Course(models.Model):
     class Meta:
         verbose_name = 'Курс'
         verbose_name_plural = 'Курсы'
+
+
+class CourseAccess(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name='Студент')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс')
+
+    def __str__(self):
+        return f'{self.student}, {self.course}'
+
+    class Meta:
+        verbose_name = 'Допуск'
+        verbose_name_plural = 'Допуски'
+
+
+
