@@ -13,3 +13,11 @@ class Course(models.Model):
     start_products = models.DateTimeField(**NULLABLE, verbose_name='Начало курса')
     cost = models.CharField(**NULLABLE, verbose_name='Стоимость курса')
 
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'Курс'
+        verbose_name_plural = 'Курсы'
+
+
