@@ -21,6 +21,8 @@ class Course(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name='Автор')
     start_products = models.DateTimeField(**NULLABLE, verbose_name='Начало')
     cost = models.CharField(max_length=50, **NULLABLE, verbose_name='Стоимость')
+    min_students = models.PositiveIntegerField(default=1)
+    max_students = models.PositiveIntegerField(default=20)
 
     def __str__(self):
         return f'{self.name}'
@@ -61,3 +63,10 @@ class Group(models.Model):
     name = models.CharField(max_length=30, verbose_name='Название группы')
     students = models.ManyToManyField(Student, **NULLABLE, verbose_name='Студенты')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс')
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'Группа'
+        verbose_name_plural = 'Группы'
