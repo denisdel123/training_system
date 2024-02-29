@@ -16,19 +16,6 @@ class Teacher(models.Model):
         verbose_name_plural = 'Преподаватели'
 
 
-class Student(models.Model):
-    first_name = models.CharField(max_length=30, verbose_name='Имя')
-    last_name = models.CharField(max_length=30, verbose_name='Фамилия')
-    photo = models.ImageField(upload_to='student_photo/', verbose_name='Фотография')
-
-    def __str__(self):
-        return f'{self.first_name}, {self.last_name}'
-
-    class Meta:
-        verbose_name = 'Студент'
-        verbose_name_plural = 'Студенты'
-
-
 class Course(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название')
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name='Автор')
@@ -43,16 +30,18 @@ class Course(models.Model):
         verbose_name_plural = 'Курсы'
 
 
-class CourseAccess(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name='Студент')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс')
+class Student(models.Model):
+    first_name = models.CharField(max_length=30, verbose_name='Имя')
+    last_name = models.CharField(max_length=30, verbose_name='Фамилия')
+    photo = models.ImageField(upload_to='student_photo/', verbose_name='Фотография')
+    access = models.ManyToManyField(Course, **NULLABLE, verbose_name='Доступные курсы')
 
     def __str__(self):
-        return f'{self.student}, {self.course}'
+        return f'{self.first_name}, {self.last_name}'
 
     class Meta:
-        verbose_name = 'Допуск'
-        verbose_name_plural = 'Допуски'
+        verbose_name = 'Студент'
+        verbose_name_plural = 'Студенты'
 
 
 class Lesson(models.Model):
@@ -68,3 +57,7 @@ class Lesson(models.Model):
         verbose_name_plural = 'Уроки'
 
 
+class Group(models.Model):
+    name = models.CharField(max_length=30, verbose_name='Название группы')
+    students = models.ManyToManyField(Student, **NULLABLE, verbose_name='Студенты')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс')
